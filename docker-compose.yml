@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: uavs-postgres
+    environment:
+      POSTGRES_DB: uavs
+      POSTGRES_USER: uavs_user
+      POSTGRES_PASSWORD: uavs_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uavs_user -d uavs"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  vault:
+    image: vault:1.15
+    container_name: uavs-vault
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: dev-token
+      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+    ports:
+      - "8200:8200"
+    command: vault server -dev
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: uavs-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: uavs-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+
+  uavs:
+    build: .
+    container_name: uavs-app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: uavs
+      DB_USERNAME: uavs_user
+      DB_PASSWORD: uavs_password
+      VAULT_HOST: vault
+      VAULT_PORT: 8200
+      VAULT_TOKEN: dev-token
+      LOG_LEVEL: INFO
+      STELLR_BASE_URL: https://api.stellr.com
+      MCAFEE_BASE_URL: https://api.mcafee.com
+      SAFEHOUSE_BASE_URL: https://api.safehouse.com
+      QWIKSILVER_BASE_URL: https://api.qwiksilver.com
+    depends_on:
+      postgres:
+        condition: service_healthy
+      vault:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/v1/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  postgres_data:
+  grafana_data:
+
+networks:
+  default:
+    name: uavs-network

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="003-add-indexes" author="uavs-dev">
+        <!-- Indexes for sale_activation table -->
+        <createIndex indexName="idx_sale_activation_invoice_product" tableName="sale_activation">
+            <column name="invoice_no"/>
+            <column name="product_ean"/>
+        </createIndex>
+
+        <createIndex indexName="idx_sale_activation_status_updated" tableName="sale_activation">
+            <column name="status"/>
+            <column name="updated_at"/>
+        </createIndex>
+
+        <createIndex indexName="idx_sale_activation_unique_ref" tableName="sale_activation" unique="true">
+            <column name="unique_ref"/>
+        </createIndex>
+
+        <createIndex indexName="idx_sale_activation_txn_date" tableName="sale_activation">
+            <column name="txn_date"/>
+        </createIndex>
+
+        <createIndex indexName="idx_sale_activation_store_code" tableName="sale_activation">
+            <column name="store_code"/>
+        </createIndex>
+
+        <createIndex indexName="idx_sale_activation_status" tableName="sale_activation">
+            <column name="status"/>
+        </createIndex>
+
+        <!-- Indexes for product_catalog table -->
+        <createIndex indexName="idx_product_catalog_category_active" tableName="product_catalog">
+            <column name="category"/>
+            <column name="active"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_catalog_vendor_active" tableName="product_catalog">
+            <column name="vendor_endpoint"/>
+            <column name="active"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_catalog_currency_active" tableName="product_catalog">
+            <column name="currency"/>
+            <column name="active"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="004-insert-sample-data" author="uavs-dev" context="dev,test">
+        <!-- Sample Product Catalog Data -->
+        <insert tableName="product_catalog">
+            <column name="product_ean" value="MCF-AV-12M-001"/>
+            <column name="category" value="ANTIVIRUS"/>
+            <column name="description" value="McAfee Antivirus 12 Month License"/>
+            <column name="currency" value="INR"/>
+            <column name="vendor_endpoint" value="MCAFEE"/>
+            <column name="is_posa" valueBoolean="true"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="min_amount" valueNumeric="199900"/>
+            <column name="max_amount" valueNumeric="299900"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert tableName="product_catalog">
+            <column name="product_ean" value="STL-GC-VAR-001"/>
+            <column name="category" value="GIFT_CARD"/>
+            <column name="description" value="Stellr Variable Amount Gift Card"/>
+            <column name="currency" value="INR"/>
+            <column name="vendor_endpoint" value="STELLR"/>
+            <column name="is_posa" valueBoolean="true"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="min_amount" valueNumeric="50000"/>
+            <column name="max_amount" valueNumeric="1000000"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert tableName="product_catalog">
+            <column name="product_ean" value="SFH-SEC-PRO-001"/>
+            <column name="category" value="SECURITY"/>
+            <column name="description" value="SafeHouse Security Pro Suite"/>
+            <column name="currency" value="INR"/>
+            <column name="vendor_endpoint" value="SAFEHOUSE"/>
+            <column name="is_posa" valueBoolean="true"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="min_amount" value="149900"/>
+            <column name="max_amount" value="149900"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert tableName="product_catalog">
+            <column name="product_ean" value="QWK-MULTI-VAR-001"/>
+            <column name="category" value="VOUCHER"/>
+            <column name="description" value="Qwiksilver Multi-Brand Voucher"/>
+            <column name="currency" value="INR"/>
+            <column name="vendor_endpoint" value="QWIKSILVER"/>
+            <column name="is_posa" valueBoolean="true"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="min_amount" value="100000"/>
+            <column name="max_amount" value="500000"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <!-- Test product for integration testing -->
+        <insert tableName="product_catalog">
+            <column name="product_ean" value="TEST-PROD-001"/>
+            <column name="category" value="TEST"/>
+            <column name="description" value="Test Product for Integration Testing"/>
+            <column name="currency" value="INR"/>
+            <column name="vendor_endpoint" value="TEST"/>
+            <column name="is_posa" valueBoolean="true"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="min_amount" value="10000"/>
+            <column name="max_amount" value="50000"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

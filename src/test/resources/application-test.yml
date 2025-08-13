@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  
+  liquibase:
+    enabled: false
+  
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9999
+          jwk-set-uri: http://localhost:9999/.well-known/jwks.json
+
+logging:
+  level:
+    com.company.uavs: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+
+uavs:
+  vendor:
+    timeouts:
+      connection: 1000
+      read: 1000
+      total: 5000
+  
+  stellr:
+    base-url: http://localhost:8080/mock/stellr
+    timeout: 1000
+    
+  mcafee:
+    base-url: http://localhost:8080/mock/mcafee
+    timeout: 1000
+    
+  safehouse:
+    base-url: http://localhost:8080/mock/safehouse
+    timeout: 1000
+    
+  qwiksilver:
+    base-url: http://localhost:8080/mock/qwiksilver
+    timeout: 1000
